@@ -10,7 +10,9 @@ You should have docker
 
 In order to build with fastText, first download the FastText vector you need in the langauge from here
 
-[FastText Pre-trained vectors](https://github.com/facebookresearch/fastText/blob/master/docs/crawl-vectors.md)
+[Facebook FastText Pre-trained vectors](https://github.com/facebookresearch/fastText/blob/master/docs/crawl-vectors.md)
+    or
+[Wiki word vectors](https://fasttext.cc/docs/en/pretrained-vectors.html)
 
 ## Load the vectors
 
@@ -31,7 +33,7 @@ Go to terminal and reach the present directory first.
 
 
 ```sh
-docker run -v $PWD:/app spacy-fasttext python load_fastText.py 
+docker run -v $PWD:/app spacy-fasttext python load_fastText.py en vector/wiki.
 ```
 
 This will build the model in the model folder
