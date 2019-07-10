@@ -12,6 +12,14 @@ import spacy
 import random
 from spacy.language import Language
 
+@plac.annotations(
+    model_dir=('Model output directory', 'option', 'm'))
+def main(lang: 'Spacy language', vectors_loc: 'Vectors location', model_dir='model'):
+    """
+    ex)
+        python load_fastText.py en vectors/wiki.en.vec
+        python load_fastText.py en vectors/wiki.en.vec -m ./model
+    """
 
 TAG_MAP = {
     'N': {'pos': 'NOUN'},
@@ -24,17 +32,11 @@ TRAIN_DATA = [
     ("Hij maakt goede muziek", {'tags': ['N','V', 'J', 'N']})
 ]
 
-
-def main(vectors_loc=None, lang=None):
-    
-    if lang is None:
-        nlp = spacy.blank('nl')
-    else:
-        # create empty language class – this is required if you're planning to
-        # save the model to disk and load it back later (models always need a
-        # "lang" setting). Use 'xx' for blank multi-language class.
-        nlp = spacy.blank('nl')
-    with open('vector/wiki.nl.vec', 'rb') as file_:
+    # create empty language class – this is required if you're planning to
+    # save the model to disk and load it back later (models always need a
+    # "lang" setting). Use 'xx' for blank multi-language class.
+    nlp = spacy.blank(lang)
+    with open(vectors_loc, 'rb') as file_:
         header = file_.readline()
         nr_row, nr_dim = header.split()
         nlp.vocab.reset_vectors(width=int(nr_dim))
@@ -44,7 +46,7 @@ def main(vectors_loc=None, lang=None):
             word = pieces[0]
             vector = numpy.asarray([float(v) for v in pieces[1:]], dtype='f')
             nlp.vocab.set_vector(word, vector)  # add the vectors to the vocab
-    
+
     
     tagger = nlp.create_pipe('tagger')
     # Add the tags. This needs to be done before you start training.
@@ -66,8 +68,7 @@ def main(vectors_loc=None, lang=None):
 
     print("Saved model to", 'nl_model_tagger')
 
-    nlp.to_disk('/app/model')
+    nlp.to_disk(model_dir)
 
 if __name__ == '__main__':
-    
-    main()
+    plac.call(main)
