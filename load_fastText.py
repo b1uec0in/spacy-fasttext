@@ -15,8 +15,8 @@ import spacy
 def main(lang: 'Spacy language', vectors_loc: 'Vectors location', model_dir='model'):
     """
     ex)
-        python load_fastText.py en vectors/wiki.en.vec
-        python load_fastText.py en vectors/wiki.en.vec -m ./model
+        python load_fastText.py en vector/wiki.en.vec
+        python load_fastText.py en vector/wiki.en.vec -m ./model
     """
 
     # create empty language class – this is required if you're planning to
